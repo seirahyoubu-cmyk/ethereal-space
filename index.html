@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETHEREAL SHOPPING</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #fff5f7; font-family: 'Inter', sans-serif; padding: 50px 20px; text-align: center; }
+        .main-container { max-width: 400px; margin: 0 auto; }
+        
+        #success-screen {
+            display: none;
+            background: white;
+            padding: 40px 20px;
+            border-radius: 25px;
+            box-shadow: 0 15px 50px rgba(212, 165, 165, 0.3);
+            border: 2px solid #d4a5a5;
+        }
+
+        .logo-wrapper { width: fit-content; margin: 0 auto 15px auto; padding: 10px; background-color: #ffeef2; border-radius: 50px; border: 1px solid rgba(212, 165, 165, 0.15); }
+        .logo-img { width: 100px; border-radius: 40px; mix-blend-mode: multiply; }
+        .shop-name { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #d4a5a5; margin-bottom: 5px; display: block; }
+        
+        .btn-ethereal { 
+            background-color: #d4a5a5; 
+            color: white !important; 
+            font-weight: 700; 
+            padding: 16px; 
+            border-radius: 15px; 
+            margin-bottom: 12px; 
+            width: 100%; 
+            display: block; 
+            text-decoration: none; 
+            border: none; 
+            text-transform: uppercase; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            transition: 0.3s;
+        }
+        .btn-ethereal:hover { opacity: 0.9; transform: scale(1.02); }
+
+        .btn-outline-ethereal {
+            background-color: transparent;
+            color: #d4a5a5 !important;
+            border: 2px solid #d4a5a5;
+        }
+
+        .ethereal-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            border: 1px solid #f0cfcf;
+            background: #fffafa;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        #pink-toast {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffeef2;
+            color: #d4a5a5;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 2px solid #d4a5a5;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 5px 15px rgba(212, 165, 165, 0.4);
+            font-size: 0.85rem;
+            min-width: 280px;
+        }
+
+        /* Faster Animated Quote Styling */
+        .affirmation-box {
+            margin-top: 40px;
+            font-family: 'Dancing Script', cursive;
+            color: #d4a5a5;
+            font-size: 1.2rem;
+            padding: 20px;
+            font-style: italic;
+            transition: opacity 0.5s ease-in-out; /* Faster fade */
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="pink-toast"></div>
+
+<div class="main-container">
+    <div id="success-screen">
+        <h4 style="font-family: 'Dancing Script'; color: #d4a5a5; font-size: 2.2rem;">Sent! ✨</h4>
+        <p style="color: #8e8e8e; margin-bottom: 25px;">Your request has been sent!<br>The seller will reach out soon. 🎀</p>
+        <button class="btn-ethereal" data-bs-toggle="modal" data-bs-target="#feedbackModal">Leave Feedback</button>
+        <button class="btn-ethereal btn-outline-ethereal" onclick="location.reload()">Back to Shop</button>
+    </div>
+
+    <div id="main-content">
+        <div class="logo-wrapper">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFECGOcAjcAvP6ZJzDmtMXukdRp7rFkguyRoEO972_zw&s" class="logo-img" alt="Logo">
+        </div>
+        <span class="shop-name">Ethereal Shopping</span>
+        <p style="color: #8e8e8e; font-size: 0.85rem; margin-bottom: 40px;">Curated beauty & lifestyle finds.</p>
+        
+        <button class="btn-ethereal" data-bs-toggle="modal" data-bs-target="#reqModal">Item Request</button>
+        <button class="btn-ethereal btn-outline-ethereal" onclick="checkFeedbackEligibility()">Share Feedback</button>
+        <button class="btn-ethereal btn-outline-ethereal" data-bs-toggle="modal" data-bs-target="#aboutModal">About This Shop</button>
+
+        <div class="affirmation-box" id="quote-display">You deserve beautiful things. ✨</div>
+    </div>
+</div>
+
+<div class="modal fade" id="reqModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4 border-0" style="border-radius: 20px;">
+            <h4 style="font-family: 'Dancing Script'; color: #d4a5a5; font-size: 2rem;" class="text-center">Item Request</h4>
+            <input type="text" id="userTikTok" class="ethereal-input" placeholder="Your TikTok Handle">
+            <input type="text" id="userItem" class="ethereal-input" placeholder="What item are you looking for?">
+            <p id="errorMsg" class="text-danger small text-center" style="display: none;">Please fill in both fields! 🎀</p>
+            <button onclick="validateAndSend()" class="btn-ethereal mt-2">Submit via Email</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4 border-0" style="border-radius: 20px;">
+            <h4 style="font-family: 'Dancing Script'; color: #d4a5a5; font-size: 2rem;" class="text-center">Your Feedback</h4>
+            <textarea id="feedbackText" class="ethereal-input" style="height: 100px; resize: none;" placeholder="Tell us your experience..."></textarea>
+            <button onclick="sendFeedback()" class="btn-ethereal mt-2">Send Feedback</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="aboutModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4 border-0" style="border-radius: 25px;">
+            <h4 style="font-family: 'Dancing Script'; color: #d4a5a5; font-size: 2rem;" class="text-center">Our Story</h4>
+            <div style="color: #8e8e8e; font-size: 0.9rem; text-align: center; line-height: 1.6;">
+                <p>Welcome to <strong>Ethereal Shopping</strong>! ✨</p>
+                <p>I created this website as a special alternative to the TikTok Showcase. Thank you for supporting my journey! 🎀</p>
+            </div>
+            <button class="btn-ethereal mt-3" data-bs-dismiss="modal">Got it!</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let isWaiting = false;
+    let hasRequested = false;
+
+    // FASTER QUOTE LOGIC
+    const quotes = [
+        "You deserve beautiful things. ✨",
+        "Make today as lovely as you are. 🎀",
+        "Stay magical, stay ethereal. ☁️",
+        "Small steps lead to big dreams. 🌸",
+        "Your style is your signature. ✨",
+        "Beauty begins when you are yourself. 🎀"
+    ];
+
+    let quoteIndex = 0;
+    const quoteElement = document.getElementById('quote-display');
+
+    function changeQuote() {
+        quoteElement.style.opacity = 0; // Fade out fast
+
+        setTimeout(() => {
+            quoteIndex = (quoteIndex + 1) % quotes.length;
+            quoteElement.innerText = quotes[quoteIndex];
+            quoteElement.style.opacity = 0.8; // Fade in fast
+        }, 500); // Only 0.5s wait to switch
+    }
+
+    // Interval changed to 3000ms (3 seconds total per quote cycle)
+    setInterval(changeQuote, 3000);
+
+    function showPinkToast(message) {
+        const toast = document.getElementById('pink-toast');
+        toast.innerHTML = message;
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 4000);
+    }
+
+    function checkFeedbackEligibility() {
+        if (!hasRequested) {
+            showPinkToast("Please make an item request first! 🎀");
+        } else {
+            new bootstrap.Modal(document.getElementById('feedbackModal')).show();
+        }
+    }
+
+    function validateAndSend() {
+        const tiktok = document.getElementById('userTikTok').value.trim();
+        const item = document.getElementById('userItem').value.trim();
+        if (tiktok === "" || item === "") {
+            document.getElementById('errorMsg').style.display = "block";
+            return;
+        }
+        hasRequested = true; 
+        bootstrap.Modal.getInstance(document.getElementById('reqModal')).hide();
+        isWaiting = true;
+        window.location.href = `mailto:leianne709@gmail.com?subject=Item Request&body=TikTok: ${tiktok}\nItem: ${item}`;
+    }
+
+    function sendFeedback() {
+        const text = document.getElementById('feedbackText').value.trim();
+        if (text === "") return;
+        window.location.href = `mailto:leianne709@gmail.com?subject=Shop Feedback&body=${encodeURIComponent(text)}`;
+        bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+        showPinkToast("Thank you for helping us grow! 🎀");
+    }
+
+    function handleReturn() {
+        if (isWaiting && document.visibilityState === 'visible') {
+            setTimeout(() => {
+                document.getElementById('main-content').style.display = 'none';
+                document.getElementById('success-screen').style.display = 'block';
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#d4a5a5', '#ffeef2', '#ffffff'] });
+                isWaiting = false;
+            }, 500);
+        }
+    }
+
+    window.addEventListener('focus', handleReturn);
+    document.addEventListener('visibilitychange', handleReturn);
+</script>
+
+</body>
+</html>

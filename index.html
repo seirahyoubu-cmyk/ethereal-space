@@ -11,7 +11,7 @@
         body { background-color: #fff5f7; font-family: 'Inter', sans-serif; padding: 50px 20px; text-align: center; }
         .main-container { max-width: 400px; margin: 0 auto; }
         
-        #success-screen {
+        .status-screen {
             display: none;
             background: white;
             padding: 40px 20px;
@@ -25,68 +25,19 @@
         .shop-name { font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #d4a5a5; margin-bottom: 5px; display: block; }
         
         .btn-ethereal { 
-            background-color: #d4a5a5; 
-            color: white !important; 
-            font-weight: 700; 
-            padding: 16px; 
-            border-radius: 15px; 
-            margin-bottom: 12px; 
-            width: 100%; 
-            display: block; 
-            text-decoration: none; 
-            border: none; 
-            text-transform: uppercase; 
-            font-size: 0.8rem; 
-            cursor: pointer; 
-            transition: 0.3s;
+            background-color: #d4a5a5; color: white !important; font-weight: 700; padding: 16px; border-radius: 15px; 
+            margin-bottom: 12px; width: 100%; display: block; text-decoration: none; border: none; 
+            text-transform: uppercase; font-size: 0.8rem; cursor: pointer; transition: 0.3s;
         }
         .btn-ethereal:hover { opacity: 0.9; transform: scale(1.02); }
+        .btn-outline-ethereal { background-color: transparent; color: #d4a5a5 !important; border: 2px solid #d4a5a5; }
 
-        .btn-outline-ethereal {
-            background-color: transparent;
-            color: #d4a5a5 !important;
-            border: 2px solid #d4a5a5;
-        }
+        .ethereal-input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #f0cfcf; background: #fffafa; outline: none; font-size: 0.9rem; }
+        .ethereal-textarea { height: 140px; resize: none; font-family: 'Inter', sans-serif; line-height: 1.6; }
 
-        .ethereal-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 12px;
-            border: 1px solid #f0cfcf;
-            background: #fffafa;
-            outline: none;
-            font-size: 0.9rem;
-        }
+        #pink-toast { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #ffeef2; color: #d4a5a5; padding: 15px 25px; border-radius: 50px; border: 2px solid #d4a5a5; font-weight: bold; z-index: 9999; box-shadow: 0 5px 15px rgba(212, 165, 165, 0.4); font-size: 0.85rem; min-width: 280px; }
 
-        #pink-toast {
-            display: none;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ffeef2;
-            color: #d4a5a5;
-            padding: 15px 25px;
-            border-radius: 50px;
-            border: 2px solid #d4a5a5;
-            font-weight: bold;
-            z-index: 9999;
-            box-shadow: 0 5px 15px rgba(212, 165, 165, 0.4);
-            font-size: 0.85rem;
-            min-width: 280px;
-        }
-
-        .affirmation-box {
-            margin-top: 40px;
-            font-family: 'Dancing Script', cursive;
-            color: #d4a5a5;
-            font-size: 1.2rem;
-            padding: 20px;
-            font-style: italic;
-            transition: opacity 0.5s ease-in-out;
-            height: 60px;
-        }
+        .affirmation-box { margin-top: 40px; font-family: 'Dancing Script', cursive; color: #d4a5a5; font-size: 1.2rem; padding: 20px; font-style: italic; transition: opacity 0.5s ease-in-out; height: 60px; }
     </style>
 </head>
 <body>
@@ -94,11 +45,23 @@
 <div id="pink-toast"></div>
 
 <div class="main-container">
-    <div id="success-screen">
+    <div id="success-sent" class="status-screen">
         <h4 style="font-family: 'Dancing Script'; color: #d4a5a5; font-size: 2.2rem;">Sent! ✨</h4>
-        <p style="color: #8e8e8e; margin-bottom: 25px;">Your request has been sent!<br>The seller will reach out soon. 🎀</p>
+        <p style="color: #8e8e8e; margin-bottom: 25px;">
+            Your item request has been sent to the seller!<br>
+            Please check your <b>TikTok inbox</b> for a message soon.
+        </p>
+        <p style="color: #bfa3a3; font-size: 0.75rem; margin-top: -15px; margin-bottom: 20px; font-style: italic;">
+            Note: Please don't reply to the email; wait for the TikTok DM!
+        </p>
         <button class="btn-ethereal" data-bs-toggle="modal" data-bs-target="#feedbackModal">Leave Feedback</button>
         <button class="btn-ethereal btn-outline-ethereal" onclick="location.reload()">Back to Shop</button>
+    </div>
+
+    <div id="success-not-sent" class="status-screen">
+        <h4 style="font-family: 'Dancing Script'; color: #d4a5a5; font-size: 2.2rem;">Almost There! ✨</h4>
+        <p style="color: #8e8e8e; margin-bottom: 25px;">Please make sure to hit <b>'Send'</b> in your email app to finish your request!</p>
+        <button class="btn-ethereal" onclick="location.reload()">Try Again</button>
     </div>
 
     <div id="main-content">
@@ -120,10 +83,30 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content p-4 border-0" style="border-radius: 20px;">
             <h4 style="font-family: 'Dancing Script'; color: #d4a5a5; font-size: 2rem;" class="text-center">Item Request</h4>
-            <input type="text" id="userTikTok" class="ethereal-input" placeholder="Your TikTok Handle">
-            <input type="text" id="userItem" class="ethereal-input" placeholder="What item are you looking for?">
-            <p id="errorMsg" class="text-danger small text-center" style="display: none;">Please fill in both fields! 🎀</p>
+            <p style="color: #8e8e8e; font-size: 0.75rem; margin-top: -10px; margin-bottom: 15px;" class="text-center">
+                Fill in the guide below.
+            </p>
+            <input type="text" id="userTikTok" class="ethereal-input" placeholder="@your_username">
+            
+            <textarea id="itemDetails" class="ethereal-input ethereal-textarea">Item name: 
+Brand: 
+Color: 
+Style: </textarea>
+            
             <button onclick="validateAndSend()" class="btn-ethereal mt-2">Submit via Email</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4 border-0" style="border-radius: 25px;">
+            <h4 style="font-family: 'Dancing Script'; color: #d4a5a5; font-size: 1.8rem;" class="text-center">Confirm Request ❗️</h4>
+            <p style="color: #8e8e8e; font-size: 0.9rem;" class="text-center">Did you click the 'Send' button in your email app?</p>
+            <div class="d-grid gap-2 mt-3">
+                <button onclick="handleChoice(true)" class="btn-ethereal">Yes, I sent it!</button>
+                <button onclick="handleChoice(false)" class="btn-ethereal btn-outline-ethereal">Not yet</button>
+            </div>
         </div>
     </div>
 </div>
@@ -156,90 +139,102 @@
 
 <script>
     let isWaiting = false;
-    let hasRequested = false;
+    let hasSent = false;
+    let confirmModal;
 
-    const quotes = [
-        "You deserve beautiful things. ✨",
-        "Make today as lovely as you are. 🎀",
-        "Stay magical, stay ethereal. ☁️",
-        "Small steps lead to big dreams. 🌸",
-        "Your style is your signature. ✨",
-        "Beauty begins when you are yourself. 🎀"
-    ];
+    document.addEventListener('DOMContentLoaded', () => {
+        confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    });
 
-    let quoteIndex = 0;
-    const quoteElement = document.getElementById('quote-display');
-
-    function changeQuote() {
-        quoteElement.style.opacity = 0;
-        setTimeout(() => {
-            quoteIndex = (quoteIndex + 1) % quotes.length;
-            quoteElement.innerText = quotes[quoteIndex];
-            quoteElement.style.opacity = 0.8;
+    const quotes = ["You deserve beautiful things. ✨", "Make today as lovely as you are. 🎀", "Stay magical, stay ethereal. ☁️"];
+    let qIdx = 0;
+    setInterval(() => {
+        const q = document.getElementById('quote-display');
+        q.style.opacity = 0;
+        setTimeout(() => { 
+            qIdx = (qIdx + 1) % quotes.length; 
+            q.innerText = quotes[qIdx]; 
+            q.style.opacity = 0.8; 
         }, 500);
-    }
+    }, 3000);
 
-    setInterval(changeQuote, 3000);
-
-    function showPinkToast(message) {
-        const toast = document.getElementById('pink-toast');
-        toast.innerHTML = message;
-        toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 4000);
-    }
-
-    function checkFeedbackEligibility() {
-        if (!hasRequested) {
-            showPinkToast("Please make an item request first! 🎀");
-        } else {
-            new bootstrap.Modal(document.getElementById('feedbackModal')).show();
-        }
+    function showPinkToast(msg) {
+        const t = document.getElementById('pink-toast');
+        t.innerHTML = msg; t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 4000);
     }
 
     function validateAndSend() {
         const tiktok = document.getElementById('userTikTok').value.trim();
-        const item = document.getElementById('userItem').value.trim();
-        if (tiktok === "" || item === "") {
-            document.getElementById('errorMsg').style.display = "block";
+        const details = document.getElementById('itemDetails').value.trim();
+        const labelsOnly = "Item name: \nBrand: \nColor: \nStyle: ";
+        
+        // TikTok Validation
+        if (tiktok === "" || !tiktok.startsWith('@') || tiktok.length < 4) {
+            showPinkToast("Please enter a valid TikTok username starting with @ 🎀");
             return;
         }
-        
-        hasRequested = true; 
-        const modalElem = document.getElementById('reqModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalElem);
-        if(modalInstance) modalInstance.hide();
-        
+
+        // Details Validation
+        if (details === "" || details === labelsOnly.trim()) {
+            showPinkToast("Please fill in the item details! ✨");
+            return;
+        }
+
         isWaiting = true;
+        bootstrap.Modal.getInstance(document.getElementById('reqModal')).hide();
         
-        // CLEAN EMAIL LOGIC: Removes the double title in the body
-        const subject = encodeURIComponent("New Item Request 🎀");
-        const body = encodeURIComponent(`TikTok: ${tiktok}\nItem: ${item}`);
+        const subject = encodeURIComponent("New Item Request");
+        
+        // Formatting new lines for the email body
+        const formattedDetails = details.replace(/\n/g, '%0D%0A');
+        const body = `TikTok Handle: ${encodeURIComponent(tiktok)}%0D%0A%0D%0AItem Details:%0D%0A${formattedDetails}`;
+        
         window.location.href = `mailto:leianne709@gmail.com?subject=${subject}&body=${body}`;
+    }
+
+    function handleReturn() {
+        if (isWaiting && document.visibilityState === 'visible') {
+            isWaiting = false;
+            setTimeout(() => {
+                confirmModal.show();
+            }, 500);
+        }
+    }
+
+    function handleChoice(didSend) {
+        confirmModal.hide();
+        document.getElementById('main-content').style.display = 'none';
+        
+        if (didSend) {
+            hasSent = true;
+            document.getElementById('success-sent').style.display = 'block';
+            confetti({ 
+                particleCount: 200, 
+                spread: 100, 
+                origin: { y: 0.6 }, 
+                colors: ['#d4a5a5', '#ffeef2', '#ffffff'] 
+            });
+        } else {
+            document.getElementById('success-not-sent').style.display = 'block';
+        }
+    }
+
+    window.addEventListener('focus', handleReturn);
+    document.addEventListener('visibilitychange', handleReturn);
+
+    function checkFeedbackEligibility() {
+        if (!hasSent) showPinkToast("Please make an item request first! 🎀");
+        else new bootstrap.Modal(document.getElementById('feedbackModal')).show();
     }
 
     function sendFeedback() {
         const text = document.getElementById('feedbackText').value.trim();
         if (text === "") return;
         window.location.href = `mailto:leianne709@gmail.com?subject=Shop Feedback&body=${encodeURIComponent(text)}`;
-        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('feedbackModal'));
-        if(modalInstance) modalInstance.hide();
-        showPinkToast("Thank you for helping us grow! 🎀");
+        bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+        showPinkToast("Thank you for your feedback! 🎀");
     }
-
-    function handleReturn() {
-        if (isWaiting && document.visibilityState === 'visible') {
-            setTimeout(() => {
-                document.getElementById('main-content').style.display = 'none';
-                document.getElementById('success-screen').style.display = 'block';
-                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#d4a5a5', '#ffeef2', '#ffffff'] });
-                isWaiting = false;
-            }, 800);
-        }
-    }
-
-    window.addEventListener('focus', handleReturn);
-    document.addEventListener('visibilitychange', handleReturn);
 </script>
-
 </body>
 </html>

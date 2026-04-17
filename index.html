@@ -77,7 +77,6 @@
             min-width: 280px;
         }
 
-        /* Faster Animated Quote Styling */
         .affirmation-box {
             margin-top: 40px;
             font-family: 'Dancing Script', cursive;
@@ -85,7 +84,7 @@
             font-size: 1.2rem;
             padding: 20px;
             font-style: italic;
-            transition: opacity 0.5s ease-in-out; /* Faster fade */
+            transition: opacity 0.5s ease-in-out;
             height: 60px;
         }
     </style>
@@ -159,7 +158,6 @@
     let isWaiting = false;
     let hasRequested = false;
 
-    // FASTER QUOTE LOGIC
     const quotes = [
         "You deserve beautiful things. ✨",
         "Make today as lovely as you are. 🎀",
@@ -173,16 +171,14 @@
     const quoteElement = document.getElementById('quote-display');
 
     function changeQuote() {
-        quoteElement.style.opacity = 0; // Fade out fast
-
+        quoteElement.style.opacity = 0;
         setTimeout(() => {
             quoteIndex = (quoteIndex + 1) % quotes.length;
             quoteElement.innerText = quotes[quoteIndex];
-            quoteElement.style.opacity = 0.8; // Fade in fast
-        }, 500); // Only 0.5s wait to switch
+            quoteElement.style.opacity = 0.8;
+        }, 500);
     }
 
-    // Interval changed to 3000ms (3 seconds total per quote cycle)
     setInterval(changeQuote, 3000);
 
     function showPinkToast(message) {
@@ -207,17 +203,26 @@
             document.getElementById('errorMsg').style.display = "block";
             return;
         }
+        
         hasRequested = true; 
-        bootstrap.Modal.getInstance(document.getElementById('reqModal')).hide();
+        const modalElem = document.getElementById('reqModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElem);
+        if(modalInstance) modalInstance.hide();
+        
         isWaiting = true;
-        window.location.href = `mailto:leianne709@gmail.com?subject=Item Request&body=TikTok: ${tiktok}\nItem: ${item}`;
+        
+        // CLEAN EMAIL LOGIC: Removes the double title in the body
+        const subject = encodeURIComponent("New Item Request 🎀");
+        const body = encodeURIComponent(`TikTok: ${tiktok}\nItem: ${item}`);
+        window.location.href = `mailto:leianne709@gmail.com?subject=${subject}&body=${body}`;
     }
 
     function sendFeedback() {
         const text = document.getElementById('feedbackText').value.trim();
         if (text === "") return;
         window.location.href = `mailto:leianne709@gmail.com?subject=Shop Feedback&body=${encodeURIComponent(text)}`;
-        bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('feedbackModal'));
+        if(modalInstance) modalInstance.hide();
         showPinkToast("Thank you for helping us grow! 🎀");
     }
 
@@ -228,7 +233,7 @@
                 document.getElementById('success-screen').style.display = 'block';
                 confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#d4a5a5', '#ffeef2', '#ffffff'] });
                 isWaiting = false;
-            }, 500);
+            }, 800);
         }
     }
 

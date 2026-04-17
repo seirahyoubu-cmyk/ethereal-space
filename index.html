@@ -256,7 +256,7 @@ Color/Style: </textarea>
     });
 
     function checkFeedbackEligibility() {
-        if (!hasSent) showPinkToast("Please make a request first! 🎀");
+        if (!hasSent) showPinkToast("This feature will only work once you make a request or you bought an item. Thank you!");
         else new bootstrap.Modal(document.getElementById('feedbackModal')).show();
     }
 
